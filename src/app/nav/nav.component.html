@@ -1,0 +1,74 @@
+
+  <!-- 1. BARRA DE NAVEGACIÓN -->
+  <nav class="navbar navbar-expand-md navbar-light bg-white  border-bottom py-3 shadow-sm">
+    <div class="container-xl d-flex justify-content-between align-items-center">
+      
+      <!-- Logo -->
+    <div class="navbar-brand d-flex align-items-center m-0" style="cursor: pointer;">
+  <img src="\img\Logo.png" alt="Taco MoLoco" style="height: 170px; width: auto;">
+</div>
+      
+      <!-- Menú Desktop -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <div class="navbar-nav gap-4 fw-semibold">
+          <a routerLink="/home" class="nav-link text-danger active">Inicio</a>
+          <a routerLink="/menulocal" class="nav-link text-secondary" style="cursor: pointer;">Nuestro Menú</a>
+          
+          <div class="dropdown position-relative">
+  
+  <button class="btn btn-link nav-link dropdown-toggle text-secondary fw-bold text-decoration-none" 
+          type="button" 
+          (click)="toggleDropdown($event)">
+    Conócenos
+  </button>
+
+  <ul class="dropdown-menu border-0 shadow-lg p-2 rounded-4 position-absolute start-0 top-100" 
+      [class.show]="dropdownAbierto"
+      style="width: 250px;">
+    
+    <li>
+      <a [routerLink]="['/nosotros']" fragment="historia" class="dropdown-item d-flex align-items-center gap-3 p-2 rounded-3" (click)="toggleDropdown($event)">
+        <span class="fs-4 bg-light p-2 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; ">📜</span>
+        <div>
+          <p class="mb-0 fw-bold lh-sm text-dark" style="font-size: 13px;">Nuestra Receta</p>
+          <small class="text-muted" style="font-size: 11px;">Nuestra trayectoria e historia</small>
+        </div>
+      </a>
+    </li>
+    
+    <li>
+      <a [routerLink]="['/nosotros']" fragment="mision" class="dropdown-item d-flex align-items-center gap-3 p-2 rounded-3" (click)="toggleDropdown($event)">
+        <span class="fs-4 bg-light p-2 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">🌮</span>
+        <div>
+          <p class="mb-0 fw-bold lh-sm text-dark" style="font-size: 13px;">Misión</p>
+          <small class="text-muted" style="font-size: 11px;">El compromiso en nuestra cocina</small>
+        </div>
+      </a>
+    </li>
+    
+    <li>
+      <a [routerLink]="['/nosotros']" fragment="vision" class="dropdown-item d-flex align-items-center gap-3 p-2 rounded-3" (click)="toggleDropdown($event)">
+        <span class="fs-4 bg-light p-2 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">🌶️</span>
+        <div>
+          <p class="mb-0 fw-bold lh-sm text-dark" style="font-size: 13px;">Visión</p>
+          <small class="text-muted" style="font-size: 11px;">Hacia dónde llevamos el sabor</small>
+        </div>
+      </a>
+    </li>
+
+  </ul>
+</div>
+          
+          <a class="nav-link text-secondary" style="cursor: pointer;">Ubicaciones</a>
+        </div>
+      </div>
+
+      <!-- Botón de Acción -->
+      <div>
+        <button class="btn btn-danger fw-bold px-4 py-2 rounded-pill shadow-sm">
+         <a routerLink="/menu" class="nav-link text-white" style="cursor: pointer;">Pedir en Línea</a>
+        </button>
+      </div>
+
+    </div>
+  </nav>
