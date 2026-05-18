@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+  scroll-behavior: smooth;
+}
+/* Puente invisible para que el menú no se cierre al bajar el mouse */
+.style-dropdown:hover .dropdown-menu {
+  display: block !important;
+  opacity: 1;
+  visibility: visible;
+  /* Creamos una zona de contacto acolchada arriba */
+  padding-top: 10px !important; 
+  transform: translateY(0px);
+  transition: all 0.15s ease-in-out;
+}
+
+/* Evitamos que el diseño interno de Bootstrap rompa el puente */
+.style-dropdown .dropdown-menu {
+  margin-top: 2px !important;
+}
+/* Animación suave para el enlace de regreso */
+.hover-danger {
+  transition: color 0.2s ease-in-out;
+}
+.hover-danger:hover {
+  color: #dc3545 !important; /* Rojo de Bootstrap */
+}
+
+/* Espacio extra entre las secciones al hacer scroll */
+.space-sections section {
+  scroll-margin-top: 100px; /* Evita que la barra de navegación tape los títulos al hacer clic en el menú */
+}
+
+/* Pestañas de Navegación */
+.custom-tab {
+  background-color: #ffffff !important;
+  color: #4b5563 !important;
+  border: 1px solid #e5e7eb !important;
+  transition: all 0.2s ease;
+}
+.custom-tab.active {
+  background-color: #ea580c !important;
+  color: #ffffff !important;
+  border-color: #ea580c !important;
+}
+.custom-tab:hover:not(.active) {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+}
+
+/* Efecto en tarjetas del menú */
+.menu-card {
+  transition: all 0.3s ease;
+}
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -10px rgba(0,0,0,0.08) !important;
+}
+
+/* Botones personalizados de la marca */
+.btn-outline-orange {
+  color: #ea580c;
+  border-color: #ea580c;
+  transition: all 0.2s ease;
+}
+.btn-outline-orange:hover {
+  background-color: #ea580c;
+  color: #ffffff;
+}

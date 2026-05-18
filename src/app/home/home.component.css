@@ -1,0 +1,15 @@
+/* Puente invisible para que el menú no se cierre al bajar el mouse */
+.style-dropdown:hover .dropdown-menu {
+  display: block !important;
+  opacity: 1;
+  visibility: visible;
+  /* Creamos una zona de contacto acolchada arriba */
+  padding-top: 10px !important; 
+  transform: translateY(0px);
+  transition: all 0.15s ease-in-out;
+}
+
+/* Evitamos que el diseño interno de Bootstrap rompa el puente */
+.style-dropdown .dropdown-menu {
+  margin-top: 2px !important;
+}
