@@ -20,6 +20,9 @@ export const routes: Routes = [
   }, { 
     path: 'menu', // <-- Cambiado el path de acceso
     loadComponent: () => import('./menu/menu.component').then(m => m.MenuComponent) // <-- Nueva ruta e importación
+  }, { 
+    path: 'ubi', // <-- Cambiado el path de acceso
+    loadComponent: () => import('./ubicacion/ubicacion.component').then(m => m.UbicacionComponent) // <-- Nueva ruta e importación
   },
   { 
     path: '**', 

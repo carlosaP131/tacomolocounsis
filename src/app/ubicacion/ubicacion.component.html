@@ -1,0 +1,73 @@
+<section class="py-5 bg-light" id="ubicacion-contacto">
+  <div class="container-xl py-4">
+    
+    <div class="row g-5 align-items-stretch">
+      
+      <div class="col-lg-5 d-flex flex-column justify-content-between">
+        <div>
+          <span class="d-inline-block fw-bold text-uppercase px-3 py-1 rounded-pill mb-2" 
+                style="font-size: 11px; letter-spacing: 1.5px; color: #ea580c; background-color: rgba(234, 88, 12, 0.1);">
+            ¿Dónde comer?
+          </span>
+          <h2 class="display-5 fw-black text-dark mb-4" style="font-weight: 900; letter-spacing: -1px;">Visítanos en el Local</h2>
+          <p class="text-muted mb-4">Te esperamos con el trompo listo, las salsas bien frías y las tortillas recién salidas del comal.</p>
+          
+          <div class="d-flex gap-3 mb-4">
+            <div class="fs-3 text-orange" style="color: #ea580c;">📍</div>
+            <div>
+              <h4 class="h6 fw-bold text-dark mb-1">Nuestra Dirección</h4>
+              <p class="text-secondary small mb-1">{{ direccionExacta }}</p>
+              <small class="text-orange fw-medium d-block" style="color: #ea580c;">📌 {{ referencia }}</small>
+            </div>
+          </div>
+
+          <div class="d-flex gap-3 mb-4">
+            <div class="fs-3 text-orange" style="color: #ea580c;">🕒</div>
+            <div>
+              <h4 class="h6 fw-bold text-dark mb-2">Horario de Servicio</h4>
+              <ul class="list-unstyled small text-secondary space-y-1">
+                <li class="d-flex justify-content-between gap-4 mb-1">
+                  <span>Lunes a Jueves:</span>
+                  <span class="fw-bold text-dark">6:00 PM - 12:00 AM</span>
+                </li>
+                <li class="d-flex justify-content-between gap-4 mb-1">
+                  <span class="text-orange fw-semibold">Viernes y Sábado:</span>
+                  <span class="fw-bold text-dark">6:00 PM - 2:00 AM 🔥</span>
+                </li>
+                <li class="d-flex justify-content-between gap-4">
+                  <span>Domingo:</span>
+                  <span class="fw-bold text-dark">5:00 PM - 11:00 PM</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-top border-light-subtle">
+          <button (click)="abrirMapa()" class="btn btn-orange w-100 py-3 rounded-3 fw-bold text-white d-flex align-items-center justify-content-center gap-2 shadow-sm transition-all"
+                  style="background-color: #ea580c;">
+            🗺️ Abrir con Google Maps / Waze
+          </button>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100" style="min-height: 400px;">
+          
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15320.197992923502!2d-96.60389814458005!3d16.32778100000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTbCsDE5JzQwLjAiTiA5NsKwMzYnMTAuMCJX!5e0!3m2!1ses-419!2smx!4v1715900000000!5m2!1ses-419!2smx"
+            width="100%" 
+            height="100%" 
+            style="border:0; min-height: 400px; display: block;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+          
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+</section>
