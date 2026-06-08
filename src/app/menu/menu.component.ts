@@ -130,7 +130,7 @@ export class MenuComponent implements OnInit {
     });
     
     mensaje += `\n💰 *Total a pagar: $${this.totalPagar}*\n\n`;
-    mensaje += '🛵 _Por favor, confírmenme el tiempo aproximado de entrega._';
+    mensaje += '🛵 _Por favor, confírmenme el tiempo aproximado de entrega del pedido._';
     
     // 3. Crear URL y abrir la API de WhatsApp en pestaña nueva
     const urlWhatsapp = `https://wa.me/${this.NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
