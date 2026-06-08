@@ -1,194 +1,44 @@
-<section class="py-5 bg-light" id="nuestro-menu">
-  <div class="container-xl py-4">
-    
-    <div class="row g-4">
+<div class="tab-content">
+  <div *ngIf="cargandoMenu" class="text-center py-5">
+    <div class="spinner-border text-orange" role="status"></div>
+    <p class="mt-2 text-muted">Cocinando el menú...</p>
+  </div>
+
+  <div *ngIf="!cargandoMenu" class="animate-fade-in">
+    <div class="row g-3">
       
-      <div class="col-lg-8">
-        
-        <div class="mb-5 text-center text-lg-start">
-          <span class="d-inline-block fw-bold text-uppercase px-3 py-1 rounded-pill mb-2" 
-                style="font-size: 11px; letter-spacing: 1.5px; color: #ea580c; background-color: rgba(234, 88, 12, 0.1);">
-            ¡Para chuparse los dedos!
-          </span>
-          <h2 class="display-5 fw-black text-dark tracking-tight" style="font-weight: 900;">Nuestro Menú Loco</h2>
-          <p class="text-muted">Selecciona tus favoritos y arma tu orden en línea.</p>
-        </div>
+      <div class="col-md-6" *ngFor="let producto of platillosFiltrados">
+        <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
+          <div class="card-body p-4 position-relative">
+            
+            <span *ngIf="producto.etiqueta" 
+                  class="position-absolute top-0 end-0 fw-bold px-3 py-1 text-white" 
+                  [ngClass]="producto.etiqueta === 'Popular' ? 'bg-danger' : 'bg-warning text-dark'"
+                  style="border-bottom-left-radius: 16px; border-top-right-radius: 16px; font-size: 13px;">
+              {{ producto.etiqueta }}
+            </span>
 
-        <ul class="nav nav-pills gap-2 mb-4 border-0 justify-content-center justify-content-lg-start" role="tablist">
-          <li class="nav-item">
-            <button class="nav-link px-4 py-2.5 fw-bold rounded-pill shadow-sm custom-tab" [class.active]="categoriaActiva === 'trompo'" (click)="cambiarCategoria('trompo')" type="button">🌮 Del Trompo</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link px-4 py-2.5 fw-bold rounded-pill shadow-sm custom-tab" [class.active]="categoriaActiva === 'parrilla'" (click)="cambiarCategoria('parrilla')" type="button">🥩 A la Parrilla</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link px-4 py-2.5 fw-bold rounded-pill shadow-sm custom-tab" [class.active]="categoriaActiva === 'bebidas'" (click)="cambiarCategoria('bebidas')" type="button">🥤 Bebidas y Más</button>
-          </li>
-        </ul>
-
-        <div class="tab-content">
-          
-          <div *ngIf="categoriaActiva === 'trompo'" class="animate-fade-in">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4 position-relative">
-                    <span class="position-absolute top-0 end-0 bg-danger text-white fw-bold px-3 py-1 rounded-bl-4" style="border-bottom-left-radius: 16px; border-top-right-radius: 16px; font-size: 13px;">Popular</span>
-                    <h3 class="h5 fw-bold text-dark pt-2 mb-2">Taco al Pastor Clásico</h3>
-                    <p class="text-muted small">Cerdo marinado en adobo secreto de chiles secos, piña fresca, jardín y copia de tortilla.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$18 c/u</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(1, 'Taco al Pastor Clásico', 18)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4">
-                    <h3 class="h5 fw-bold text-dark mb-2">Gringa Loca</h3>
-                    <p class="text-muted small">Tortilla de harina grande, costra de queso asadero derretido a la perfección y carne al pastor.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$65</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(2, 'Gringa Loca', 65)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <h3 class="h5 fw-bold text-dark pt-2 mb-2">{{ producto.nombre }}</h3>
+            <p class="text-muted small">{{ producto.descripcion }}</p>
+            
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
+              <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">
+                ${{ producto.precio }} {{ producto.categoria === 'trompo' ? 'c/u' : '' }}
+              </span>
+              
+              <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" 
+                      (click)="agregarAlCarrito(producto.id, producto.nombre, producto.precio)">
+                Agregar ➕
+              </button>
             </div>
           </div>
-
-          <div *ngIf="categoriaActiva === 'parrilla'" class="animate-fade-in">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4">
-                    <h3 class="h5 fw-bold text-dark mb-2">Taco de Asada / Bistec</h3>
-                    <p class="text-muted small">Jugosa pulpa de res picada, cocinada con carbón de mezquite para un toque ahumado.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$22 c/u</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(3, 'Taco de Asada', 22)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4 position-relative">
-                    <span class="position-absolute top-0 end-0 bg-warning text-dark fw-bold px-3 py-1 rounded-bl-4" style="border-bottom-left-radius: 16px; border-top-right-radius: 16px; font-size: 13px;">Bomba</span>
-                    <h3 class="h5 fw-bold text-dark pt-2 mb-2">Campechano Especial</h3>
-                    <p class="text-muted small">La combinación perfecta: Carne de asada, chorizo artesanal y chicharrón crujiente.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$25 c/u</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(4, 'Campechano Especial', 25)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="categoriaActiva === 'bebidas'" class="animate-fade-in">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4">
-                    <h3 class="h5 fw-bold text-dark mb-2">Horchata Cremosa</h3>
-                    <p class="text-muted small">Agua artesanal hecha desde cero con arroz seleccionado, lácteos y vainilla.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$30</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(5, 'Horchata Cremosa', 30)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4">
-                    <h3 class="h5 fw-bold text-dark mb-2">Jamaica Refrescante</h3>
-                    <p class="text-muted small">Concentrado 100% natural de flor de Jamaica, perfecta para las salsas.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$30</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(6, 'Jamaica Refrescante', 30)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm rounded-4 menu-card transition-all">
-                  <div class="card-body p-4">
-                    <h3 class="h5 fw-bold text-dark mb-2">Coca-Cola® Original</h3>
-                    <p class="text-muted small">Bebida refrescante de cola, el acompañante clásico para cualquier orden de tacos.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light">
-                      <span class="fw-black text-dark h5 mb-0" style="font-weight: 800;">$30</span>
-                      <button class="btn btn-sm btn-outline-orange rounded-pill px-3 fw-bold" (click)="agregarAlCarrito(7, 'Coca-Cola® Original', 30)">Agregar ➕</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
 
-      <div class="col-lg-4">
-        <div class="card border-0 shadow-lg rounded-4 position-sticky" style="top: 100px;">
-          
-          <div class="card-header bg-dark text-white p-4 rounded-top-4 d-flex justify-content-between align-items-center" style="background-color: #0a0a0a !important;">
-            <h3 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
-              🛒 Tu Orden
-            </h3>
-            <span class="badge rounded-pill bg-orange text-white px-2.5 py-1.5 fs-7" style="background-color: #ea580c;">
-              {{ totalProductos }} ítems
-            </span>
-          </div>
-
-          <div class="card-body p-4" style="max-height: 400px; overflow-y: auto;">
-            
-            <div *ngIf="carrito.length === 0" class="text-center py-5 text-muted">
-              <span class="display-4 d-block mb-2">🌮</span>
-              <p class="fw-bold mb-1">Tu carrito está vacío</p>
-              <p class="small text-secondary mb-0">Agrega unos ricos tacos para empezar tu pedido.</p>
-            </div>
-
-            <div *ngIf="carrito.length > 0">
-              <div *ngFor="let item of carrito" class="d-flex align-items-center justify-content-between py-3 border-b border-light-subtle" style="border-bottom: 1px solid #f3f4f6;">
-                <div>
-                  <h4 class="h6 fw-bold text-dark mb-0">{{ item.nombre }}</h4>
-                  <small class="text-orange fw-semibold" style="color: #ea580c;">${{ item.precio }} c/u</small>
-                </div>
-                
-                <div class="d-flex align-items-center gap-2">
-                  <button class="btn btn-xs btn-light rounded-circle border p-0 d-flex align-items-center justify-content-center" style="width: 26px; height: 26px; font-weight: bold;" (click)="cambiarCantidad(item.id, -1)">-</button>
-                  <span class="fw-bold px-1" style="min-width: 20px; text-align: center;">{{ item.cantidad }}</span>
-                  <button class="btn btn-xs btn-light rounded-circle border p-0 d-flex align-items-center justify-content-center" style="width: 26px; height: 26px; font-weight: bold;" (click)="cambiarCantidad(item.id, 1)">+</button>
-                  
-                  <button class="btn btn-link text-danger p-0 ms-2 text-decoration-none" (click)="eliminarDelCarrito(item.id)">🗑️</button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="card-footer bg-white p-4 rounded-bottom-4 border-top border-light" *ngIf="carrito.length > 0">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-muted fw-bold">Total a pagar:</span>
-              <span class="h3 fw-black text-dark mb-0" style="font-weight: 900; color: #0a0a0a;">${{ totalPagar }}</span>
-            </div>
-            
-            <button class="btn w-full btn-orange text-white py-3 rounded-3 fw-bold w-100 transition-all shadow-sm btn-order" 
-                    style="background-color: #ea580c;"
-                    (click)="enviarPedido()">
-              Pedir por WhatsApp 🚀
-            </button>
-            <p class="text-center text-muted small mt-2 mb-0" style="font-size: 11px;">Tu orden se enviará detallada para confirmación rápida.</p>
-          </div>
-
-        </div>
+      <div class="col-12 text-center py-5" *ngIf="platillosFiltrados.length === 0">
+        <p class="text-muted">Próximamente más delicias en esta categoría... 🌮</p>
       </div>
 
     </div>
-    
   </div>
-</section>
+</div>

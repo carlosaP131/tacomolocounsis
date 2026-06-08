@@ -1,12 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SupabaseService } from '../../app/services/supabase.service'; // Asegúrate de ajustar bien esta ruta de tu servicio
 
-// Definimos la estructura de un producto en el carrito
 interface ItemCarrito {
   id: number;
   nombre: string;
   precio: number;
   cantidad: number;
+}
+
+// Interfaz para mapear los datos que vienen de la base de datos
+interface PlatilloMenu {
+  etiqueta: any;
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  categoria: string; // 'trompo', 'bebidas', etc.
+  disponible: boolean;
+  imagen_url?: string;
 }
 
 @Component({
@@ -16,17 +28,51 @@ interface ItemCarrito {
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   categoriaActiva: string = 'trompo';
-  
-  // Arreglo que almacenará los productos del carrito
+
+  // Arreglos de datos dinámicos
+  listaPlatillos: PlatilloMenu[] = []; // Guardará todo lo que traiga Supabase
+  platillosFiltrados: PlatilloMenu[] = []; // Los que se muestran según la categoría activa
+
   carrito: ItemCarrito[] = [];
+  cargandoMenu: boolean = true; // Para poner un spinner visual si quieres
+
+  // Inyectamos el servicio en el constructor
+  constructor(private supabaseService: SupabaseService) { }
+
+  async ngOnInit(): Promise<void> {
+    await this.cargarMenuDesdeBD();
+  }
+
+  // Jala los datos desde Supabase
+  async cargarMenuDesdeBD(): Promise<void> {
+    try {
+      this.cargandoMenu = true;
+      // Trae los datos usando el método genérico que armamos en tu servicio
+      // Cambia 'obtenerDatosDeTabla' por 'obtenerMenu'
+      const datos = await this.supabaseService.obtenerMenu();
+      this.listaPlatillos = datos as PlatilloMenu[];
+      this.filtrarPlatillos();
+    } catch (error) {
+      console.error('Error al conectar con el menú de Supabase:', error);
+    } finally {
+      this.cargandoMenu = false;
+    }
+  }
 
   cambiarCategoria(categoria: string): void {
     this.categoriaActiva = categoria;
+    this.filtrarPlatillos();
   }
 
-  // Agregar producto al carrito o incrementar su cantidad
+  // Filtra en memoria para no volver a hacer peticiones a la BD cada que cambias de pestaña
+  filtrarPlatillos(): void {
+    this.platillosFiltrados = this.listaPlatillos.filter(
+      platillo => platillo.categoria === this.categoriaActiva && platillo.disponible
+    );
+  }
+
   agregarAlCarrito(id: number, nombre: string, precio: number): void {
     const itemExistente = this.carrito.find(item => item.id === id);
 
@@ -37,12 +83,10 @@ export class MenuComponent {
     }
   }
 
-  // Modificar cantidad directamente desde el carrito
   cambiarCantidad(id: number, cambio: number): void {
     const item = this.carrito.find(i => i.id === id);
     if (item) {
       item.cantidad += cambio;
-      // Si la cantidad llega a 0, lo eliminamos del carrito
       if (item.cantidad <= 0) {
         this.eliminarDelCarrito(id);
       }
@@ -53,27 +97,39 @@ export class MenuComponent {
     this.carrito = this.carrito.filter(item => item.id !== id);
   }
 
-  // Obtener el total de piezas en el carrito (para el badge)
   get totalProductos(): number {
     return this.carrito.reduce((acc, item) => acc + item.cantidad, 0);
   }
 
-  // Calcular el precio total de la orden
   get totalPagar(): number {
     return this.carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
   }
 
-  // Simular el envío del pedido a WhatsApp o backend
-  enviarPedido(): void {
+  // Envía a WhatsApp y opcionalmente guarda el pedido en tu base de datos
+  async enviarPedido(): Promise<void> {
     if (this.carrito.length === 0) return;
-    
+
+    // --- PASO EXTRA ESCALABLE: Guardar comanda en Supabase ---
+    try {
+      // Si creas una tabla llamada 'pedidos', puedes meter este bloque para que guarde la venta
+      /*
+      await this.supabaseService.guardarPedidoEnBD({
+        articulos: this.carrito,
+        total: this.totalPagar,
+        fecha: new Date()
+      });
+      */
+    } catch (err) {
+      console.error('No se pudo respaldar en la BD, pero enviando a WhatsApp...');
+    }
+    // ---------------------------------------------------------
+
     let mensaje = '¡Hola! Me gustaría hacer el siguiente pedido en Tacomoloco:\n\n';
     this.carrito.forEach(item => {
       mensaje += `• ${item.cantidad}x ${item.nombre} ($${item.precio * item.cantidad})\n`;
     });
     mensaje += `\n*Total a pagar: $${this.totalPagar}*`;
-    
-    // Codifica el texto para URL y abre WhatsApp en una nueva pestaña
+
     const urlWhatsapp = `https://wa.me/5211234567890?text=${encodeURIComponent(mensaje)}`;
     window.open(urlWhatsapp, '_blank');
   }
