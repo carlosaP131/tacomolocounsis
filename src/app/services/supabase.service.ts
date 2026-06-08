@@ -25,4 +25,21 @@ export class SupabaseService {
     }
     return data;
   }
+  // Agrega este método dentro de tu clase SupabaseService
+async guardarPedidoEnBD(pedido: { articulos: any[]; total: number }) {
+  const { data, error } = await this.supabase
+    .from('pedidos') // Nombre de tu nueva tabla
+    .insert([
+      { 
+        articulos: pedido.articulos, 
+        total: pedido.total 
+      }
+    ]);
+
+  if (error) {
+    console.error('Error al registrar la comanda en Supabase:', error);
+    throw error;
+  }
+  return data;
+}
 }

@@ -95,6 +95,7 @@ export class MenuComponent implements OnInit {
       }
     }
   }
+  
 
   eliminarDelCarrito(id: number): void {
     this.carrito = this.carrito.filter(item => item.id !== id);
@@ -110,30 +111,27 @@ export class MenuComponent implements OnInit {
 
   // Envía a WhatsApp y opcionalmente guarda el pedido en tu base de datos
   async enviarPedido(): Promise<void> {
-    if (this.carrito.length === 0) return;
-
-    // --- PASO EXTRA ESCALABLE: Guardar comanda en Supabase ---
-    try {
-      // Si creas una tabla llamada 'pedidos', puedes meter este bloque para que guarde la venta
-      /*
-      await this.supabaseService.guardarPedidoEnBD({
-        articulos: this.carrito,
-        total: this.totalPagar,
-        fecha: new Date()
-      });
-      */
-    } catch (err) {
-      console.error('No se pudo respaldar en la BD, pero enviando a WhatsApp...');
-    }
-    // ---------------------------------------------------------
-
-    let mensaje = '¡Hola! Me gustaría hacer el siguiente pedido en Tacomoloco:\n\n';
-    this.carrito.forEach(item => {
-      mensaje += `• ${item.cantidad}x ${item.nombre} ($${item.precio * item.cantidad})\n`;
+  if (this.carrito.length === 0) return;
+  
+  // Respaldar la orden de forma síncrona en el backend (Supabase)
+  try {
+    await this.supabaseService.guardarPedidoEnBD({
+      articulos: this.carrito,
+      total: this.totalPagar
     });
-    mensaje += `\n*Total a pagar: $${this.totalPagar}*`;
-
-    const urlWhatsapp = `https://wa.me/5211234567890?text=${encodeURIComponent(mensaje)}`;
-    window.open(urlWhatsapp, '_blank');
+    console.log('¡Comanda registrada con éxito en el backend de Supabase!');
+  } catch (err) {
+    console.error('No se pudo respaldar en la BD, procediendo solo con WhatsApp...');
   }
+
+  // Lógica de WhatsApp idéntica que ya tenías armada
+  let mensaje = '¡Hola! Me gustaría hacer el siguiente pedido en Tacomoloco:\n\n';
+  this.carrito.forEach(item => {
+    mensaje += `• ${item.cantidad}x ${item.nombre} ($${item.precio * item.cantidad})\n`;
+  });
+  mensaje += `\n*Total a pagar: $${this.totalPagar}*`;
+  
+  const urlWhatsapp = `https://wa.me/5211234567890?text=${encodeURIComponent(mensaje)}`;
+  window.open(urlWhatsapp, '_blank');
+}
 }
