@@ -122,15 +122,15 @@ export class MenuComponent implements OnInit {
     }
 
     // 2. Construir el mensaje de WhatsApp bien formateado con emojis
-    let mensaje = '👋 ¡Hola! Me gustaría hacer el siguiente pedido en *Tacomoloco*:\n\n';
-    mensaje += '📋 *DETALLE DE LA ORDEN:*\n';
+    let mensaje = ' ¡Hola! Me gustaría hacer el siguiente pedido en *Tacomoloco*:\n\n';
+    mensaje += ' *DETALLE DE LA ORDEN:*\n';
     
     this.carrito.forEach(item => {
       mensaje += `• ${item.cantidad}x ${item.nombre} — $${item.precio * item.cantidad}\n`;
     });
     
-    mensaje += `\n💰 *Total a pagar: $${this.totalPagar}*\n\n`;
-    mensaje += '🛵 _Por favor, confírmenme el tiempo aproximado de entrega del pedido._';
+    mensaje += `\n *Total a pagar: $${this.totalPagar}*\n\n`;
+    mensaje += ' _Por favor, confírmenme el tiempo aproximado de entrega del pedido._';
     
     // 3. Crear URL y abrir la API de WhatsApp en pestaña nueva
     const urlWhatsapp = `https://wa.me/${this.NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
