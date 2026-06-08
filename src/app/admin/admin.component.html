@@ -1,0 +1,96 @@
+<div class="container py-5">
+  
+  <div *ngIf="!estaLogueado" class="row justify-content-center py-5">
+    <div class="col-md-5">
+      <div class="card border-0 shadow-lg rounded-4 p-4">
+        <div class="card-body text-center">
+          <span class="display-4">🔑</span>
+          <h2 class="fw-black text-dark my-3" style="font-weight: 800;">Acceso Personal</h2>
+          <p class="text-muted small">Ingresa tus credenciales para ver las comandas en tiempo real.</p>
+          
+          <form (ngSubmit)="manejarLogin()">
+            <div class="form-floating mb-3 text-start">
+              <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email" name="email" required>
+              <label for="floatingInput">Correo Electrónico</label>
+            </div>
+            <div class="form-floating mb-3 text-start">
+              <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password" [(ngModel)]="password" name="password" required>
+              <label for="floatingPassword">Contraseña</label>
+            </div>
+
+            <div *ngIf="errorLogin" class="alert alert-danger small py-2 rounded-3" role="alert">
+              ⚠️ {{ errorLogin }}
+            </div>
+
+            <button class="btn btn-dark w-100 py-3 rounded-3 fw-bold mt-2" type="submit">
+              Entrar al Tablero 🚀
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="estaLogueado" class="animate-fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom">
+      <div>
+        <h2 class="display-6 fw-black text-dark mb-0" style="font-weight: 900;">📋 Panel de Comandas</h2>
+        <p class="text-muted mb-0">Revisa y despacha las órdenes de Tacomoloco.</p>
+      </div>
+      <button class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold" (click)="manejarLogout()">
+        Cerrar Sesión 🚪
+      </button>
+    </div>
+
+    <div *ngIf="cargandoPedidos" class="text-center py-5">
+      <div class="spinner-border text-orange" role="status"></div>
+      <p class="mt-2 text-muted">Buscando nuevas comandas en la nube...</p>
+    </div>
+
+    <div *ngIf="!cargandoPedidos">
+      
+      <div *ngIf="pedidos.length === 0" class="text-center py-5 text-muted">
+        <span class="display-3">😴</span>
+        <h4 class="fw-bold mt-3">No hay pedidos por el momento</h4>
+        <p class="small">Las órdenes que hagan los clientes aparecerán aquí automáticamente.</p>
+        <button class="btn btn-sm btn-light border mt-2" (click)="cargarPedidos()">🔄 Actualizar</button>
+      </div>
+
+      <div class="row g-4" *ngIf="pedidos.length > 0">
+        <div class="col-md-6 col-lg-4" *ngFor="let pedido of pedidos">
+          <div class="card border-0 shadow-sm rounded-4 h-100">
+            
+            <div class="card-header bg-dark text-white p-3 rounded-top-4 d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-orange" style="color: #ea580c;">Orden #{{ pedido.id }}</span>
+              <small class="text-secondary">{{ pedido.created_at | date:'shortTime' }}</small>
+            </div>
+
+            <div class="card-body p-4">
+              <h5 class="text-muted small text-uppercase fw-bold mb-3">Detalle del Pedido:</h5>
+              
+              <ul class="list-unstyled mb-0">
+                <li *ngFor="let item of pedido.articulos" class="d-flex justify-content-between py-1 border-bottom border-light small">
+                  <span><strong>{{ item.cantidad }}x</strong> {{ item.nombre }}</span>
+                  <span class="text-muted">${{ item.precio * item.cantidad }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-footer bg-white p-4 rounded-bottom-4 border-top-0 d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-muted d-block">Cobrar:</small>
+                <span class="h4 fw-black text-dark mb-0" style="font-weight: 900;">${{ pedido.total }}</span>
+              </div>
+              <button class="btn btn-sm btn-success rounded-pill px-3 fw-bold" (click)="cargarPedidos()">
+                ✔ Despachado
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

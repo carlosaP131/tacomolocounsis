@@ -42,4 +42,35 @@ async guardarPedidoEnBD(pedido: { articulos: any[]; total: number }) {
   }
   return data;
 }
+// Agrega estos métodos en tu src/app/services/supabase.service.ts
+
+// 1. Iniciar sesión con Supabase Auth
+async login(email: string, password: string) {
+  const { data, error } = await this.supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+  if (error) throw error;
+  return data;
+}
+
+// 2. Cerrar sesión
+async logout() {
+  const { error } = await this.supabase.auth.signOut();
+  if (error) throw error;
+}
+
+// 3. Obtener los pedidos ordenados (los más nuevos primero)
+async obtenerPedidos() {
+  const { data, error } = await this.supabase
+    .from('pedidos')
+    .select('*')
+    .order('created_at', { ascending: false }); // Lo más nuevo arriba
+
+  if (error) {
+    console.error('Error al traer pedidos:', error);
+    throw error;
+  }
+  return data;
+}
 }

@@ -15,14 +15,21 @@ export const routes: Routes = [
     loadComponent: () => import('./nosotros/nosotros.component').then(m => m.NosotrosComponent) 
   },
   { 
-    path: 'menulocal', // <-- Cambiado el path de acceso
-    loadComponent: () => import('./menulocal/menulocal.component').then(m => m.MenuLocalComponent) // <-- Nueva ruta e importación
-  }, { 
-    path: 'menu', // <-- Cambiado el path de acceso
-    loadComponent: () => import('./menu/menu.component').then(m => m.MenuComponent) // <-- Nueva ruta e importación
-  }, { 
-    path: 'ubi', // <-- Cambiado el path de acceso
-    loadComponent: () => import('./ubicacion/ubicacion.component').then(m => m.UbicacionComponent) // <-- Nueva ruta e importación
+    path: 'menulocal', 
+    loadComponent: () => import('./menulocal/menulocal.component').then(m => m.MenuLocalComponent) 
+  }, 
+  { 
+    path: 'menu', 
+    loadComponent: () => import('./menu/menu.component').then(m => m.MenuComponent) 
+  }, 
+  { 
+    path: 'ubi', 
+    loadComponent: () => import('./ubicacion/ubicacion.component').then(m => m.UbicacionComponent) 
+  },
+  // 🔥 AGREGAMOS LA NUEVA RUTA PARA EL TRABAJADOR AQUÍ:
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent)
   },
   { 
     path: '**', 
