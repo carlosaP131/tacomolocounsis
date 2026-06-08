@@ -47,20 +47,23 @@ export class MenuComponent implements OnInit {
 
   // Jala los datos desde Supabase
   async cargarMenuDesdeBD(): Promise<void> {
-    try {
-      this.cargandoMenu = true;
-      // Trae los datos usando el método genérico que armamos en tu servicio
-      // Cambia 'obtenerDatosDeTabla' por 'obtenerMenu'
-      const datos = await this.supabaseService.obtenerMenu();
-      this.listaPlatillos = datos as PlatilloMenu[];
-      this.filtrarPlatillos();
-    } catch (error) {
-      console.error('Error al conectar con el menú de Supabase:', error);
-    } finally {
-      this.cargandoMenu = false;
-    }
+  try {
+    this.cargandoMenu = true;
+    
+    // Llamamos a tu función del servicio (usa el nombre correcto que dejaste: obtenerMenu u obtenerDatosDeTabla)
+    const datos = await this.supabaseService.obtenerMenu(); 
+    
+    this.listaPlatillos = datos as PlatilloMenu[];
+    
+    // 🔥 ESTA LÍNEA ES CLAVE: Aplica el filtro en cuanto llegan los datos
+    this.filtrarPlatillos(); 
+    
+  } catch (error) {
+    console.error('Error al conectar con el menú de Supabase:', error);
+  } finally {
+    this.cargandoMenu = false;
   }
-
+}
   cambiarCategoria(categoria: string): void {
     this.categoriaActiva = categoria;
     this.filtrarPlatillos();
