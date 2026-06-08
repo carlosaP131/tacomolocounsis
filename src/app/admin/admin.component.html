@@ -4,17 +4,17 @@
     <div class="col-md-5">
       <div class="card border-0 shadow-lg rounded-4 p-4">
         <div class="card-body text-center">
-          <span class="display-4">🔑</span>
+          <span class="display-4" role="img" aria-label="key">🔑</span>
           <h2 class="fw-black text-dark my-3" style="font-weight: 800;">Acceso Personal</h2>
           <p class="text-muted small">Ingresa tus credenciales para ver las comandas en tiempo real.</p>
           
-          <form (ngSubmit)="manejarLogin()">
+          <form (ngSubmit)="manejarLogin(); $event.preventDefault()">
             <div class="form-floating mb-3 text-start">
-              <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email" name="email" required>
+              <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email" name="email" required autocomplete="email">
               <label for="floatingInput">Correo Electrónico</label>
             </div>
             <div class="form-floating mb-3 text-start">
-              <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password" [(ngModel)]="password" name="password" required>
+              <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password" [(ngModel)]="password" name="password" required autocomplete="current-password">
               <label for="floatingPassword">Contraseña</label>
             </div>
 
@@ -22,8 +22,9 @@
               ⚠️ {{ errorLogin }}
             </div>
 
-            <button class="btn btn-dark w-100 py-3 rounded-3 fw-bold mt-2" type="submit">
-              Entrar al Tablero 🚀
+            <button class="btn btn-dark w-100 py-3 rounded-3 fw-bold mt-2" type="submit" [disabled]="cargandoPedidos">
+              <span *ngIf="!cargandoPedidos">Entrar al Tablero 🚀</span>
+              <span *ngIf="cargandoPedidos" class="spinner-border spinner-border-sm" role="status"></span>
             </button>
           </form>
         </div>
@@ -43,25 +44,25 @@
     </div>
 
     <div *ngIf="cargandoPedidos" class="text-center py-5">
-      <div class="spinner-border text-orange" role="status"></div>
+      <div class="spinner-border text-orange" style="color: #ea580c;" role="status"></div>
       <p class="mt-2 text-muted">Buscando nuevas comandas en la nube...</p>
     </div>
 
     <div *ngIf="!cargandoPedidos">
       
-      <div *ngIf="pedidos.length === 0" class="text-center py-5 text-muted">
-        <span class="display-3">😴</span>
+      <div *ngIf="pedidos && pedidos.length === 0" class="text-center py-5 text-muted">
+        <span class="display-3" role="img" aria-label="sleeping">😴</span>
         <h4 class="fw-bold mt-3">No hay pedidos por el momento</h4>
         <p class="small">Las órdenes que hagan los clientes aparecerán aquí automáticamente.</p>
         <button class="btn btn-sm btn-light border mt-2" (click)="cargarPedidos()">🔄 Actualizar</button>
       </div>
 
-      <div class="row g-4" *ngIf="pedidos.length > 0">
+      <div class="row g-4" *ngIf="pedidos && pedidos.length > 0">
         <div class="col-md-6 col-lg-4" *ngFor="let pedido of pedidos">
           <div class="card border-0 shadow-sm rounded-4 h-100">
             
             <div class="card-header bg-dark text-white p-3 rounded-top-4 d-flex justify-content-between align-items-center">
-              <span class="fw-bold text-orange" style="color: #ea580c;">Orden #{{ pedido.id }}</span>
+              <span class="fw-bold" style="color: #ea580c;">Orden #{{ pedido.id }}</span>
               <small class="text-secondary">{{ pedido.created_at | date:'shortTime' }}</small>
             </div>
 
@@ -71,7 +72,7 @@
               <ul class="list-unstyled mb-0">
                 <li *ngFor="let item of pedido.articulos" class="d-flex justify-content-between py-1 border-bottom border-light small">
                   <span><strong>{{ item.cantidad }}x</strong> {{ item.nombre }}</span>
-                  <span class="text-muted">${{ item.precio * item.cantidad }}</span>
+                  <span class="text-muted">${{item.precio * item.cantidad }}</span>
                 </li>
               </ul>
             </div>
